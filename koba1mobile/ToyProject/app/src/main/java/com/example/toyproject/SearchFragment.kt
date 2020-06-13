@@ -9,7 +9,10 @@ import androidx.navigation.fragment.findNavController
 import com.example.toyproject.api.ApiManager
 import com.example.toyproject.common.base.BaseFragment
 import com.jakewharton.rxbinding2.support.v7.widget.queryTextChangeEvents
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 
 class SearchFragment : BaseFragment() {
     private lateinit var apiManager: ApiManager
@@ -56,14 +59,32 @@ class SearchFragment : BaseFragment() {
                 .map { it.toString() }
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError { error -> println(error.message) }
-                .subscribe { query -> requestSearch(query) }
+                .subscribe { query ->
+                    run {
+                        requestSearch(query)
+                        this.clearFocus()
+                    }
+                }
         }
     }
 
     private fun requestSearch(query: String) {
         Log.d(TAG, "request query: $query")
 
-        apiManager.requestGitRepos(query)
+        compositeDisposable += apiManager.requestGitRepos(query)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy (
+                onNext = {
+                    if(it.total_count == 0){
+                        //empty result
+                        Log.d(TAG, "search result is empty")
+                        return@subscribeBy
+                    }
+
+                    Log.d(TAG, "total count : ${it.total_count}")
+                },
+                onError = { error -> Log.e(TAG, "requestSearch error : ${error.message}") }
+            )
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

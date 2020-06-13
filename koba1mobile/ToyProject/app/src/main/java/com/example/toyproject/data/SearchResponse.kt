@@ -1,3 +1,10 @@
 package com.example.toyproject.data
 
-data class SearchResponse (var response: Int)
+import com.google.gson.annotations.SerializedName
+
+data class SearchResponse (
+    val total_count: Int,
+
+    @SerializedName("items")
+    val repoItems: List<RepoItem>
+)
