@@ -1,20 +1,19 @@
 package com.example.toyproject
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.toyproject.api.ApiManager
+import com.example.toyproject.common.base.BaseFragment
 import com.jakewharton.rxbinding2.support.v7.widget.queryTextChangeEvents
 import io.reactivex.android.schedulers.AndroidSchedulers
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
-class SearchFragment : Fragment() {
+class SearchFragment : BaseFragment() {
     private lateinit var apiManager: ApiManager
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,7 +49,7 @@ class SearchFragment : Fragment() {
         searchItem.expandActionView()
 
         with(searchItem.actionView as SearchView) {
-            queryTextChangeEvents()
+            compositeDisposable += queryTextChangeEvents()
                 .filter { it.isSubmitted }
                 .map { it.queryText() }
                 .filter { it.isNotEmpty() }
@@ -62,7 +61,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun requestSearch(query: String) {
-        println(query)
+        Log.d(TAG, "request query: $query")
 
         apiManager.requestGitRepos(query)
     }
