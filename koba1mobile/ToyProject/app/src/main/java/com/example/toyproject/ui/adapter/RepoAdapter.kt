@@ -18,7 +18,9 @@ import kotlinx.android.synthetic.main.holder_git_repo.view.*
 class RepoAdapter(private val context: Context?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(),
     ListAdapter {
+
     private lateinit var eventSubject: PublishSubject<ItemData>
+    private lateinit var repos: List<GitItem>
 
     fun setClickEventSubject(subject: PublishSubject<ItemData>) = apply { eventSubject = subject }
 
@@ -33,14 +35,16 @@ class RepoAdapter(private val context: Context?) :
     }
 
     override fun getItemCount(): Int {
-        return Repositorys.gitItemRepository.items.size
+        return repos.size
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolder) {
-            holder.bind(Repositorys.gitItemRepository.items[position])
+            holder.bind(repos[position])
         }
     }
+
+    fun setData(list: List<GitItem>) = apply { repos = list }
 
     override fun getClickSubject(): PublishSubject<ItemData> = eventSubject
 
@@ -52,7 +56,7 @@ class RepoAdapter(private val context: Context?) :
     inner class GitRepoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), ViewHolder {
         init {
             itemView.clicks()
-                .map { _ -> Repositorys.gitItemRepository.items[layoutPosition] }
+                .map { repos[layoutPosition] }
                 .subscribe(getClickSubject())
         }
 

@@ -14,6 +14,8 @@ import com.example.toyproject.api.NetworkState
 import com.example.toyproject.common.base.BaseFragment
 import com.example.toyproject.common.base.list.ItemData
 import com.example.toyproject.controller.SearchController
+import com.example.toyproject.db.DatabaseManager
+import com.example.toyproject.model.Repositorys
 import com.example.toyproject.model.domain.GitItem
 import com.example.toyproject.ui.adapter.RepoAdapter
 import com.example.toyproject.ui.SharedViewModel
@@ -75,6 +77,7 @@ class SearchFragment : BaseFragment() {
     private fun onSearchResponse(state: NetworkState) {
         when (state) {
             NetworkState.suceess -> {
+                repoAdapter.setData(Repositorys.gitItemRepository.searchItems)
                 repoAdapter.notifyDataSetChanged()
             }
             NetworkState.error -> {
@@ -86,6 +89,7 @@ class SearchFragment : BaseFragment() {
         val item = itemData as GitItem
         findNavController().navigate(R.id.action_SearchFragment_to_ownerFragment)
         sharedViewModel.selectOwner(item)
+        context?.let{ DatabaseManager().getHistoryDao(it).insertRepos(item) }
         Log.d(TAG, item.full_name)
     }
 

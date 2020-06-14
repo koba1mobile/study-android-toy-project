@@ -42,7 +42,7 @@ class SearchController(private val context: Context?) {
             .doOnError { Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show() }
             .subscribeBy(
                 onNext = {
-                    Repositorys.gitItemRepository.items = it.gitItems
+                    Repositorys.gitItemRepository.searchItems = it.gitItems
                     searchSubject.onNext(NetworkState.suceess)
                 },
                 onError = {
