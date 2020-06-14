@@ -1,4 +1,4 @@
-package com.example.toyproject.data
+package com.example.toyproject.model.domain
 
 import com.google.gson.annotations.SerializedName
 

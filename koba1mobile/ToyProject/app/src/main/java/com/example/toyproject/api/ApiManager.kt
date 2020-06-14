@@ -1,7 +1,7 @@
 package com.example.toyproject.api
 
 import com.example.toyproject.common.base.ApiUrl
-import com.example.toyproject.data.SearchResponse
+import com.example.toyproject.model.domain.SearchResponse
 import io.reactivex.Observable
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory

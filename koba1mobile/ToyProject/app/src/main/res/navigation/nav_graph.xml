@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/HistoryFragment"
-        android:name="com.example.toyproject.HistoryFragment"
+        android:name="com.example.toyproject.ui.HistoryFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_history">
 
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/SearchFragment"
-        android:name="com.example.toyproject.SearchFragment"
+        android:name="com.example.toyproject.ui.search.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
 </navigation>

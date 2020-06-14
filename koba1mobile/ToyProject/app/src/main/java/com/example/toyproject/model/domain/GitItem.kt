@@ -1,8 +1,8 @@
-package com.example.toyproject.data
+package com.example.toyproject.model.domain
 
-import com.google.gson.annotations.SerializedName
+import com.example.toyproject.model.domain.Owner
 
-data class RepoItem (
+data class GitItem (
     val full_name: String,
 
     val language: String?,

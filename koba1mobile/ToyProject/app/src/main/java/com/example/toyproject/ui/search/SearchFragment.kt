@@ -1,21 +1,22 @@
-package com.example.toyproject
+package com.example.toyproject.ui.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.navigation.fragment.findNavController
+import com.example.toyproject.R
 import com.example.toyproject.api.ApiManager
+import com.example.toyproject.api.NetworkState
 import com.example.toyproject.common.base.BaseFragment
-import com.jakewharton.rxbinding2.support.v7.widget.queryTextChangeEvents
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
+import com.example.toyproject.controller.SearchController
+import com.example.toyproject.model.Repositorys
+import io.reactivex.subjects.PublishSubject
 
 class SearchFragment : BaseFragment() {
     private lateinit var apiManager: ApiManager
+    private lateinit var searchController: SearchController
+    private lateinit var subject: PublishSubject<NetworkState>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +42,20 @@ class SearchFragment : BaseFragment() {
 
     private fun init() {
         apiManager = ApiManager()
+        subject = PublishSubject.create()
+        compositeDisposable += subject.subscribe(this::onSearchResponse)
+        searchController = SearchController().apply { searchSubscribe(subject) }
+    }
+
+    private fun onSearchResponse(state: NetworkState) {
+        when (state) {
+            NetworkState.suceess -> {
+                
+            }
+            NetworkState.error -> {
+
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -52,39 +67,9 @@ class SearchFragment : BaseFragment() {
         searchItem.expandActionView()
 
         with(searchItem.actionView as SearchView) {
-            compositeDisposable += queryTextChangeEvents()
-                .filter { it.isSubmitted }
-                .map { it.queryText() }
-                .filter { it.isNotEmpty() }
-                .map { it.toString() }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError { error -> println(error.message) }
-                .subscribe { query ->
-                    run {
-                        requestSearch(query)
-                        this.clearFocus()
-                    }
-                }
+            // 검색 요청
+            compositeDisposable += searchController.requestSearch(this, apiManager)
         }
-    }
-
-    private fun requestSearch(query: String) {
-        Log.d(TAG, "request query: $query")
-
-        compositeDisposable += apiManager.requestGitRepos(query)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy (
-                onNext = {
-                    if(it.total_count == 0){
-                        //empty result
-                        Log.d(TAG, "search result is empty")
-                        return@subscribeBy
-                    }
-
-                    Log.d(TAG, "total count : ${it.total_count}")
-                },
-                onError = { error -> Log.e(TAG, "requestSearch error : ${error.message}") }
-            )
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

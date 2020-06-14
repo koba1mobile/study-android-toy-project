@@ -1,6 +1,6 @@
 package com.example.toyproject.api
 
-import com.example.toyproject.data.SearchResponse
+import com.example.toyproject.model.domain.SearchResponse
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query

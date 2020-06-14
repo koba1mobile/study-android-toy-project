@@ -1,4 +1,4 @@
-package com.example.toyproject.data
+package com.example.toyproject.model.domain
 
 import com.google.gson.annotations.SerializedName
 
@@ -6,5 +6,5 @@ data class SearchResponse (
     val total_count: Int,
 
     @SerializedName("items")
-    val repoItems: List<RepoItem>
+    val gitItems: List<GitItem>
 )
