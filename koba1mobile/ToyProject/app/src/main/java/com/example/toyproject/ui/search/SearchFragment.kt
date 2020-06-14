@@ -1,22 +1,35 @@
 package com.example.toyproject.ui.search
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toyproject.R
 import com.example.toyproject.api.ApiManager
 import com.example.toyproject.api.NetworkState
 import com.example.toyproject.common.base.BaseFragment
+import com.example.toyproject.common.base.list.ItemData
 import com.example.toyproject.controller.SearchController
-import com.example.toyproject.model.Repositorys
+import com.example.toyproject.model.domain.GitItem
 import io.reactivex.subjects.PublishSubject
+import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : BaseFragment() {
-    private lateinit var apiManager: ApiManager
+    // view
+    private lateinit var searchAdapter: SearchAdapter
+
+    // controller
+    private var apiManager = ApiManager()
     private lateinit var searchController: SearchController
-    private lateinit var subject: PublishSubject<NetworkState>
+
+    // event
+    private lateinit var searchSubject: PublishSubject<NetworkState>
+    private lateinit var clickSubject: PublishSubject<ItemData>
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,8 +41,17 @@ class SearchFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
         init()
+        initView()
+    }
+
+    private fun init() {
+        searchSubject = PublishSubject.create()
+        clickSubject = PublishSubject.create()
+        compositeDisposable += searchSubject.subscribe(this::onSearchResponse)
+        compositeDisposable += clickSubject.subscribe(this::onClick)
+        searchController = SearchController(context).apply { searchSubscribe(searchSubject) }
+        searchAdapter = SearchAdapter(context).setClickEventSubject(clickSubject)
     }
 
     private fun initView() {
@@ -38,24 +60,26 @@ class SearchFragment : BaseFragment() {
 
         // onCreateOptionsMenu 실행되도록
         setHasOptionsMenu(true)
-    }
 
-    private fun init() {
-        apiManager = ApiManager()
-        subject = PublishSubject.create()
-        compositeDisposable += subject.subscribe(this::onSearchResponse)
-        searchController = SearchController().apply { searchSubscribe(subject) }
+        recycler_view.apply {
+            adapter = searchAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
     }
 
     private fun onSearchResponse(state: NetworkState) {
         when (state) {
             NetworkState.suceess -> {
-                
+                searchAdapter.notifyDataSetChanged()
             }
-            NetworkState.error -> {
-
+            NetworkState.error ->{
             }
         }
+    }
+
+    private fun onClick(itemData: ItemData){
+        val item = itemData as GitItem
+        Log.d(TAG, item.full_name)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

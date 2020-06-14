@@ -1,6 +1,6 @@
 package com.example.toyproject.model.domain
 
-import com.example.toyproject.model.domain.Owner
+import com.example.toyproject.common.base.list.ItemData
 
 data class GitItem (
     val full_name: String,
@@ -14,4 +14,4 @@ data class GitItem (
     val description: String?,
 
     val updated_at: String
-)
+) : ItemData
