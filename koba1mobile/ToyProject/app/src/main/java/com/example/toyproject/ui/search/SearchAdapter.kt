@@ -45,10 +45,14 @@ class SearchAdapter(private val context: Context?) :
 
     override fun getClickSubject(): PublishSubject<ItemData> = eventSubject
 
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        getClickSubject().onComplete()
+    }
+
     inner class GitRepoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), ViewHolder {
         init {
             itemView.clicks()
-                .takeUntil(RxView.detaches(itemView))
                 .map { _ -> Repositorys.gitItemRepository.items[layoutPosition] }
                 .subscribe(getClickSubject())
         }
@@ -64,5 +68,6 @@ class SearchAdapter(private val context: Context?) :
                 tv_language.text = item.language ?: ""
             }
         }
+
     }
 }

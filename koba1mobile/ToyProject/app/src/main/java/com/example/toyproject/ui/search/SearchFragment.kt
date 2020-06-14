@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toyproject.R
@@ -14,6 +15,7 @@ import com.example.toyproject.common.base.BaseFragment
 import com.example.toyproject.common.base.list.ItemData
 import com.example.toyproject.controller.SearchController
 import com.example.toyproject.model.domain.GitItem
+import com.example.toyproject.ui.SharedViewModel
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_search.*
 
@@ -28,6 +30,9 @@ class SearchFragment : BaseFragment() {
     // event
     private lateinit var searchSubject: PublishSubject<NetworkState>
     private lateinit var clickSubject: PublishSubject<ItemData>
+
+    // view model
+    private val sharedViewModel: SharedViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -78,6 +83,8 @@ class SearchFragment : BaseFragment() {
 
     private fun onClick(itemData: ItemData) {
         val item = itemData as GitItem
+        findNavController().navigate(R.id.action_SearchFragment_to_ownerFragment)
+        sharedViewModel.selectOwner(item)
         Log.d(TAG, item.full_name)
     }
 

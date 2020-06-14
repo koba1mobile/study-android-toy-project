@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/HistoryFragment"
-        android:name="com.example.toyproject.ui.HistoryFragment"
+        android:name="com.example.toyproject.ui.history.HistoryFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_history">
 
@@ -21,5 +21,13 @@
         android:id="@+id/SearchFragment"
         android:name="com.example.toyproject.ui.search.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_SearchFragment_to_ownerFragment"
+            app:destination="@id/ownerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ownerFragment"
+        android:name="com.example.toyproject.ui.owner.OwnerFragment"
+        android:label="OwnerFragment" />
 </navigation>

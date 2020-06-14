@@ -1,9 +1,10 @@
-package com.example.toyproject.ui
+package com.example.toyproject.ui.history
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.toyproject.R
@@ -30,6 +31,12 @@ class HistoryFragment : BaseFragment() {
     }
 
     private fun initView() {
+        // toolbar에 back버튼 생성
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
+        // onCreateOptionsMenu 실행되도록
+        setHasOptionsMenu(true)
+
         fab.setOnClickListener { findNavController().navigate(R.id.action_HistoryFragment_to_SearchFragment) }
     }
 }
