@@ -24,7 +24,13 @@ class SearchAdapter(private val context: Context?) :
     fun setClickEventSubject(subject: PublishSubject<ItemData>) = apply { eventSubject = subject }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return GitRepoViewHolder(LayoutInflater.from(context).inflate(R.layout.holder_git_repo, parent, false))
+        return GitRepoViewHolder(
+            LayoutInflater.from(context).inflate(
+                R.layout.holder_git_repo,
+                parent,
+                false
+            )
+        )
     }
 
     override fun getItemCount(): Int {

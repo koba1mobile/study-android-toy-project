@@ -30,8 +30,6 @@ class HistoryFragment : BaseFragment() {
     }
 
     private fun initView() {
-        fab.setOnClickListener { view ->
-            findNavController().navigate(R.id.action_HistoryFragment_to_SearchFragment)
-        }
+        fab.setOnClickListener { findNavController().navigate(R.id.action_HistoryFragment_to_SearchFragment) }
     }
 }

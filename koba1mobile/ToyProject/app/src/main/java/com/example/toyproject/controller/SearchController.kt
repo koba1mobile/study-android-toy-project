@@ -1,7 +1,6 @@
 package com.example.toyproject.controller
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import com.example.toyproject.api.ApiManager
@@ -14,7 +13,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 
-class SearchController(val context: Context?) {
+class SearchController(private val context: Context?) {
     private val TAG = this::class.java.simpleName
     private lateinit var searchSubject: PublishSubject<NetworkState>
 

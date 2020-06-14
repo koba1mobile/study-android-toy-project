@@ -15,13 +15,13 @@ open class BaseFragment : Fragment() {
         compositeDisposable = CompositeDisposable()
     }
 
-    operator fun CompositeDisposable.plusAssign(disposable: Disposable){
+    operator fun CompositeDisposable.plusAssign(disposable: Disposable) {
         compositeDisposable.add(disposable)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if(!compositeDisposable.isDisposed){
+        if (!compositeDisposable.isDisposed) {
             compositeDisposable.dispose()
         }
     }

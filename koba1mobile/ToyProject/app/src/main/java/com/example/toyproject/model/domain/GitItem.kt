@@ -2,7 +2,7 @@ package com.example.toyproject.model.domain
 
 import com.example.toyproject.common.base.list.ItemData
 
-data class GitItem (
+data class GitItem(
     val full_name: String,
 
     val language: String?,

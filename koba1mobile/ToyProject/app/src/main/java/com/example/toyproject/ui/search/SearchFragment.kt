@@ -3,7 +3,6 @@ package com.example.toyproject.ui.search
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.navigation.fragment.findNavController
@@ -72,12 +71,12 @@ class SearchFragment : BaseFragment() {
             NetworkState.suceess -> {
                 searchAdapter.notifyDataSetChanged()
             }
-            NetworkState.error ->{
+            NetworkState.error -> {
             }
         }
     }
 
-    private fun onClick(itemData: ItemData){
+    private fun onClick(itemData: ItemData) {
         val item = itemData as GitItem
         Log.d(TAG, item.full_name)
     }
