@@ -1,4 +1,4 @@
-package com.example.toyproject.ui.search
+package com.example.toyproject.ui.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,12 +11,11 @@ import com.example.toyproject.common.base.list.ListAdapter
 import com.example.toyproject.common.base.list.ViewHolder
 import com.example.toyproject.model.Repositorys
 import com.example.toyproject.model.domain.GitItem
-import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.holder_git_repo.view.*
 
-class SearchAdapter(private val context: Context?) :
+class RepoAdapter(private val context: Context?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(),
     ListAdapter {
     private lateinit var eventSubject: PublishSubject<ItemData>

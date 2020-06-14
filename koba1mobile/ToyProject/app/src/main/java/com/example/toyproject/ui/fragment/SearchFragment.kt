@@ -1,4 +1,4 @@
-package com.example.toyproject.ui.search
+package com.example.toyproject.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -15,13 +15,14 @@ import com.example.toyproject.common.base.BaseFragment
 import com.example.toyproject.common.base.list.ItemData
 import com.example.toyproject.controller.SearchController
 import com.example.toyproject.model.domain.GitItem
+import com.example.toyproject.ui.adapter.RepoAdapter
 import com.example.toyproject.ui.SharedViewModel
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : BaseFragment() {
     // view
-    private lateinit var searchAdapter: SearchAdapter
+    private lateinit var repoAdapter: RepoAdapter
 
     // controller
     private var apiManager = ApiManager()
@@ -55,7 +56,7 @@ class SearchFragment : BaseFragment() {
         compositeDisposable += searchSubject.subscribe(this::onSearchResponse)
         compositeDisposable += clickSubject.subscribe(this::onClick)
         searchController = SearchController(context).apply { searchSubscribe(searchSubject) }
-        searchAdapter = SearchAdapter(context).setClickEventSubject(clickSubject)
+        repoAdapter = RepoAdapter(context).setClickEventSubject(clickSubject)
     }
 
     private fun initView() {
@@ -66,7 +67,7 @@ class SearchFragment : BaseFragment() {
         setHasOptionsMenu(true)
 
         recycler_view.apply {
-            adapter = searchAdapter
+            adapter = repoAdapter
             layoutManager = LinearLayoutManager(context)
         }
     }
@@ -74,7 +75,7 @@ class SearchFragment : BaseFragment() {
     private fun onSearchResponse(state: NetworkState) {
         when (state) {
             NetworkState.suceess -> {
-                searchAdapter.notifyDataSetChanged()
+                repoAdapter.notifyDataSetChanged()
             }
             NetworkState.error -> {
             }

@@ -1,4 +1,4 @@
-package com.example.toyproject.ui.history
+package com.example.toyproject.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
